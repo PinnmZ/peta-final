@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_f615d911f34e80b64cc0ddd6608e0842 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/ardhi/Leaflet.MousePosition/src/L.Control.MousePosition.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ardhi/Leaflet.MousePosition/src/L.Control.MousePosition.min.css"/>
+</head>
+<body>
+    
+    
+<div style="
+position: fixed;
+bottom: 50px;
+left: 10px;
+z-index:9999;
+background: white;
+padding: 12px;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0,0,0,0.3);
+font-size:14px;
+">
+
+<b>Legenda</b><br> 
+🔵 Hulu/Muara<br> 
+🟢 Sungai Besar<br> 
+🟠 Anak Sungai<br> 
+🔴 Kota (Grafik Hujan)<br> 
+🟡 Garis kuning: Aliran Air
+</div>
+    
+            <div class="folium-map" id="map_f615d911f34e80b64cc0ddd6608e0842" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_f615d911f34e80b64cc0ddd6608e0842 = L.map(
+                "map_f615d911f34e80b64cc0ddd6608e0842",
+                {
+                    center: [0.35, 111.5],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 7,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_f615d911f34e80b64cc0ddd6608e0842);
+
+            
+
+        
+    
+            var tile_layer_3ad2a8e2e0f57ebebf9ae4cdb99818a1 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_3ad2a8e2e0f57ebebf9ae4cdb99818a1.addTo(map_f615d911f34e80b64cc0ddd6608e0842);
+        
+    
+            var tile_layer_6daab6ffc84560f6725dd4426b01f3a8 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_6daab6ffc84560f6725dd4426b01f3a8.addTo(map_f615d911f34e80b64cc0ddd6608e0842);
+        
+    
+            var tile_layer_a6431e0ad0af79c72441e63151ec87fc = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "\u00a9 Esri",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_a6431e0ad0af79c72441e63151ec87fc.addTo(map_f615d911f34e80b64cc0ddd6608e0842);
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_f615d911f34e80b64cc0ddd6608e0842);
+        
+    
+            var tile_layer_2ef7db1305b696a498f16307cf97f95b = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detect_retina": false, "max_native_zoom": 19, "max_zoom": 19, "min_zoom": 0, "no_wrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+            var mini_map_0992f079f9643139cd413e7205231dba = new L.Control.MiniMap(
+                tile_layer_2ef7db1305b696a498f16307cf97f95b,
+                {
+  "position": "bottomright",
+  "width": 150,
+  "height": 150,
+  "collapsedWidth": 25,
+  "collapsedHeight": 25,
+  "zoomLevelOffset": -5,
+  "centerFixed": false,
+  "zoomAnimation": false,
+  "toggleDisplay": false,
+  "autoToggleDisplay": false,
+  "minimized": false,
+}
+            );
+            map_f615d911f34e80b64cc0ddd6608e0842.addControl(mini_map_0992f079f9643139cd413e7205231dba);
+        
+    
+            var measure_control_4618a16b628e502f718fb957d623b47e = new L.Control.Measure(
+                {
+  "position": "topright",
+  "primaryLengthUnit": "meters",
+  "secondaryLengthUnit": "miles",
+  "primaryAreaUnit": "sqmeters",
+  "secondaryAreaUnit": "acres",
+});
+            map_f615d911f34e80b64cc0ddd6608e0842.addControl(measure_control_4618a16b628e502f718fb957d623b47e);
+
+            // Workaround for using this plugin with Leaflet>=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+    
+            var mouse_position_374cbf27fb1c726d55f5585417ec4f01 = new L.Control.MousePosition(
+                {
+  "position": "bottomright",
+  "separator": " : ",
+  "emptyString": "Unavailable",
+  "lngFirst": false,
+  "numDigits": 5,
+  "prefix": "",
+}
+            );
+            mouse_position_374cbf27fb1c726d55f5585417ec4f01.options["latFormatter"] =
+                undefined;
+            mouse_position_374cbf27fb1c726d55f5585417ec4f01.options["lngFormatter"] =
+                undefined;
+            map_f615d911f34e80b64cc0ddd6608e0842.addControl(mouse_position_374cbf27fb1c726d55f5585417ec4f01);
+        
+    
+            var feature_group_d77e00988193fc8998073d17a0a79235 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_f46802a6987c209829c8bd1e677eb303 = L.marker(
+                [0.616424, 113.792087],
+                {
+}
+            ).addTo(feature_group_d77e00988193fc8998073d17a0a79235);
+        
+    
+            var icon_543ed664604b106526e4f15a5787503d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1f006076465fefbef9fe1795b431d6d6 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_325fa3af492ccbe4f442eb6143984669 = $(`<div id="html_325fa3af492ccbe4f442eb6143984669" style="width: 100.0%; height: 100.0%;">         <div style="width:220px; font-size:13px; line-height:1.4;">         <b>Hulu Kapuas</b>         <hr style="margin:5px 0;">         Hutan tropis, curah hujan tinggi<br>         📊 Data: BMKG & BPS         </div>         </div>`)[0];
+                popup_1f006076465fefbef9fe1795b431d6d6.setContent(html_325fa3af492ccbe4f442eb6143984669);
+            
+        
+
+        marker_f46802a6987c209829c8bd1e677eb303.bindPopup(popup_1f006076465fefbef9fe1795b431d6d6)
+        ;
+
+        
+    
+    
+            marker_f46802a6987c209829c8bd1e677eb303.bindTooltip(
+                `<div>
+                     Hulu Kapuas
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f46802a6987c209829c8bd1e677eb303.setIcon(icon_543ed664604b106526e4f15a5787503d);
+            
+    
+            var marker_d99754a58842936d7bf7d47897910ec5 = L.marker(
+                [0.055618, 109.191055],
+                {
+}
+            ).addTo(feature_group_d77e00988193fc8998073d17a0a79235);
+        
+    
+            var icon_b2a86f2ade33f7a64cb76c5e2458ead0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c6434be47a9c6476eedbd61bf65aaeb7 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_7e38e7d68fdcc021156ad70ef8155d20 = $(`<div id="html_7e38e7d68fdcc021156ad70ef8155d20" style="width: 100.0%; height: 100.0%;">         <div style="width:220px; font-size:13px; line-height:1.4;">         <b>Muara Kapuas</b>         <hr style="margin:5px 0;">         Wilayah pesisir, dipengaruhi pasang surut<br>         📊 Data: BMKG & BPS         </div>         </div>`)[0];
+                popup_c6434be47a9c6476eedbd61bf65aaeb7.setContent(html_7e38e7d68fdcc021156ad70ef8155d20);
+            
+        
+
+        marker_d99754a58842936d7bf7d47897910ec5.bindPopup(popup_c6434be47a9c6476eedbd61bf65aaeb7)
+        ;
+
+        
+    
+    
+            marker_d99754a58842936d7bf7d47897910ec5.bindTooltip(
+                `<div>
+                     Muara Kapuas
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d99754a58842936d7bf7d47897910ec5.setIcon(icon_b2a86f2ade33f7a64cb76c5e2458ead0);
+            
+    
+            var poly_line_a205b7d30b682d2b40b20fe3ff3bf983 = L.polyline(
+                [[0.616424, 113.792087], [0.3, 112.5], [0.1, 111.0], [0.055618, 109.191055]],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": "10,10", "dashOffset": null, "fill": false, "fillColor": "yellow", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(feature_group_d77e00988193fc8998073d17a0a79235);
+        
+    
+            feature_group_d77e00988193fc8998073d17a0a79235.addTo(map_f615d911f34e80b64cc0ddd6608e0842);
+        
+    
+            var feature_group_57b4d58edb013efc2c0d5ec5a133cc6f = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_fdbdfaf8e1c8c3601cc887e036400b17 = L.marker(
+                [0.3, 112.5],
+                {
+}
+            ).addTo(feature_group_57b4d58edb013efc2c0d5ec5a133cc6f);
+        
+    
+            var icon_70aec5e8ccc4d2b376772efb24d1d097 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c56d4c517bc9aa582cfeff203390bc3a = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_c0f6a43273e2e625bfdc694aaf434212 = $(`<div id="html_c0f6a43273e2e625bfdc694aaf434212" style="width: 100.0%; height: 100.0%;">     <div style="width:220px; font-size:13px; line-height:1.4;">     <b>Sungai Kapuas</b>     <hr style="margin:5px 0;">     📏 Panjang: 1.143 km<br>     🌊 Debit: 5000–6000 m³/s<br>     🌧 Curah hujan: Tinggi<br>     📊 Kondisi: Rawan banjir musiman<br>     🐟 Ikan: Arwana, patin, baung<br>     📊 Data: BMKG & BPS     </div>     </div>`)[0];
+                popup_c56d4c517bc9aa582cfeff203390bc3a.setContent(html_c0f6a43273e2e625bfdc694aaf434212);
+            
+        
+
+        marker_fdbdfaf8e1c8c3601cc887e036400b17.bindPopup(popup_c56d4c517bc9aa582cfeff203390bc3a)
+        ;
+
+        
+    
+    
+            marker_fdbdfaf8e1c8c3601cc887e036400b17.bindTooltip(
+                `<div>
+                     Kapuas
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_fdbdfaf8e1c8c3601cc887e036400b17.setIcon(icon_70aec5e8ccc4d2b376772efb24d1d097);
+            
+    
+            feature_group_57b4d58edb013efc2c0d5ec5a133cc6f.addTo(map_f615d911f34e80b64cc0ddd6608e0842);
+        
+    
+            var feature_group_f4edd261d8845912515fea2bf8271a3c = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_d117c964a52556a4091f73a6e9db2bfe = L.marker(
+                [-0.329, 111.733],
+                {
+}
+            ).addTo(feature_group_f4edd261d8845912515fea2bf8271a3c);
+        
+    
+            var icon_daa91ee2de2ff9ba57479956c5aae87a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5530302173670aac546803a92aa98f3a = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_c7f15da4c2b1ed6ef5b312b3175e72ec = $(`<div id="html_c7f15da4c2b1ed6ef5b312b3175e72ec" style="width: 100.0%; height: 100.0%;">         <div style="width:220px; font-size:13px; line-height:1.4;">         <b>Sungai Melawi</b>         <hr style="margin:5px 0;">         📏 Panjang: 471 km<br>         🌧 Curah hujan: Tinggi<br>         📊 Kondisi: Rawan banjir<br>         🐟 Ikan: patin, baung<br>         📊 Data: BMKG & BPS         </div>         </div>`)[0];
+                popup_5530302173670aac546803a92aa98f3a.setContent(html_c7f15da4c2b1ed6ef5b312b3175e72ec);
+            
+        
+
+        marker_d117c964a52556a4091f73a6e9db2bfe.bindPopup(popup_5530302173670aac546803a92aa98f3a)
+        ;
+
+        
+    
+    
+            marker_d117c964a52556a4091f73a6e9db2bfe.bindTooltip(
+                `<div>
+                     Melawi
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d117c964a52556a4091f73a6e9db2bfe.setIcon(icon_daa91ee2de2ff9ba57479956c5aae87a);
+            
+    
+            var marker_eea88c9edd18bd76dfba0f93f1db486d = L.marker(
+                [0.126, 110.61],
+                {
+}
+            ).addTo(feature_group_f4edd261d8845912515fea2bf8271a3c);
+        
+    
+            var icon_41f857d5a3735e54953a9e18c49a812f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9a52f575d2c45058b70756746e7f66db = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_039d232c298f05f24fddffc318bd3b00 = $(`<div id="html_039d232c298f05f24fddffc318bd3b00" style="width: 100.0%; height: 100.0%;">         <div style="width:220px; font-size:13px; line-height:1.4;">         <b>Sungai Sekayam</b>         <hr style="margin:5px 0;">         📏 Panjang: 221 km<br>         🌧 Curah hujan: Tinggi<br>         📊 Kondisi: Rawan banjir<br>         🐟 Ikan: lele<br>         📊 Data: BMKG & BPS         </div>         </div>`)[0];
+                popup_9a52f575d2c45058b70756746e7f66db.setContent(html_039d232c298f05f24fddffc318bd3b00);
+            
+        
+
+        marker_eea88c9edd18bd76dfba0f93f1db486d.bindPopup(popup_9a52f575d2c45058b70756746e7f66db)
+        ;
+
+        
+    
+    
+            marker_eea88c9edd18bd76dfba0f93f1db486d.bindTooltip(
+                `<div>
+                     Sekayam
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_eea88c9edd18bd76dfba0f93f1db486d.setIcon(icon_41f857d5a3735e54953a9e18c49a812f);
+            
+    
+            var marker_b85ecbdeef25b4b4f184061ae51119df = L.marker(
+                [-0.021, 109.35],
+                {
+}
+            ).addTo(feature_group_f4edd261d8845912515fea2bf8271a3c);
+        
+    
+            var icon_564f947efb27fb5157cbae1a91c4574e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_bcdf8adc0c5b1a134abb380993cc4686 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_57ae71f6dd8d7e52de1241bd032e88a4 = $(`<div id="html_57ae71f6dd8d7e52de1241bd032e88a4" style="width: 100.0%; height: 100.0%;">         <div style="width:220px; font-size:13px; line-height:1.4;">         <b>Sungai Landak</b>         <hr style="margin:5px 0;">         📏 Panjang: 178 km<br>         🌧 Curah hujan: Tinggi<br>         📊 Kondisi: Rawan banjir<br>         🐟 Ikan: gabus<br>         📊 Data: BMKG & BPS         </div>         </div>`)[0];
+                popup_bcdf8adc0c5b1a134abb380993cc4686.setContent(html_57ae71f6dd8d7e52de1241bd032e88a4);
+            
+        
+
+        marker_b85ecbdeef25b4b4f184061ae51119df.bindPopup(popup_bcdf8adc0c5b1a134abb380993cc4686)
+        ;
+
+        
+    
+    
+            marker_b85ecbdeef25b4b4f184061ae51119df.bindTooltip(
+                `<div>
+                     Landak
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b85ecbdeef25b4b4f184061ae51119df.setIcon(icon_564f947efb27fb5157cbae1a91c4574e);
+            
+    
+            var marker_013c1a8a598d1f92857d27b932b4bd9c = L.marker(
+                [-0.488, 109.376],
+                {
+}
+            ).addTo(feature_group_f4edd261d8845912515fea2bf8271a3c);
+        
+    
+            var icon_64da1ef1997f6b3c7e6e724a4b945754 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1394c50c48d2a9ea5d37338bea9ae863 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_f7fb1f10a71b23e6afe86c735f55d701 = $(`<div id="html_f7fb1f10a71b23e6afe86c735f55d701" style="width: 100.0%; height: 100.0%;">         <div style="width:220px; font-size:13px; line-height:1.4;">         <b>Sungai Kubu</b>         <hr style="margin:5px 0;">         📏 Panjang: 150 km<br>         🌧 Curah hujan: Tinggi<br>         📊 Kondisi: Rawan banjir<br>         🐟 Ikan: udang<br>         📊 Data: BMKG & BPS         </div>         </div>`)[0];
+                popup_1394c50c48d2a9ea5d37338bea9ae863.setContent(html_f7fb1f10a71b23e6afe86c735f55d701);
+            
+        
+
+        marker_013c1a8a598d1f92857d27b932b4bd9c.bindPopup(popup_1394c50c48d2a9ea5d37338bea9ae863)
+        ;
+
+        
+    
+    
+            marker_013c1a8a598d1f92857d27b932b4bd9c.bindTooltip(
+                `<div>
+                     Kubu
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_013c1a8a598d1f92857d27b932b4bd9c.setIcon(icon_64da1ef1997f6b3c7e6e724a4b945754);
+            
+    
+            var marker_535640819db73c59172108842487fd5f = L.marker(
+                [-1.3264924979543993, 110.46605968163382],
+                {
+}
+            ).addTo(feature_group_f4edd261d8845912515fea2bf8271a3c);
+        
+    
+            var icon_5926b4e28c1215f0bbde10f3d008aed8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c4586747208f282d952b9bd2685e08eb = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_1ed4ca57a3cad3e62bceb8716f4aaeab = $(`<div id="html_1ed4ca57a3cad3e62bceb8716f4aaeab" style="width: 100.0%; height: 100.0%;">         <div style="width:220px; font-size:13px; line-height:1.4;">         <b>Sungai Pawan</b>         <hr style="margin:5px 0;">         📏 Panjang: 197 km<br>         🌧 Curah hujan: Tinggi<br>         📊 Kondisi: Rawan banjir<br>         🐟 Ikan: ikan air tawar<br>         📊 Data: BMKG & BPS         </div>         </div>`)[0];
+                popup_c4586747208f282d952b9bd2685e08eb.setContent(html_1ed4ca57a3cad3e62bceb8716f4aaeab);
+            
+        
+
+        marker_535640819db73c59172108842487fd5f.bindPopup(popup_c4586747208f282d952b9bd2685e08eb)
+        ;
+
+        
+    
+    
+            marker_535640819db73c59172108842487fd5f.bindTooltip(
+                `<div>
+                     Pawan
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_535640819db73c59172108842487fd5f.setIcon(icon_5926b4e28c1215f0bbde10f3d008aed8);
+            
+    
+            var marker_4453ce48cd13e094cc228dc0245bf645 = L.marker(
+                [1.3645208467684382, 109.30968793264805],
+                {
+}
+            ).addTo(feature_group_f4edd261d8845912515fea2bf8271a3c);
+        
+    
+            var icon_f672d9f0fe8570bc21007f0c605f7a5c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a77f998413efea996cc26f4df4868552 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_39f859eb5b8e66eb447c7f06fb1c862f = $(`<div id="html_39f859eb5b8e66eb447c7f06fb1c862f" style="width: 100.0%; height: 100.0%;">         <div style="width:220px; font-size:13px; line-height:1.4;">         <b>Sungai Sambas</b>         <hr style="margin:5px 0;">         📏 Panjang: 233 km<br>         🌧 Curah hujan: Tinggi<br>         📊 Kondisi: Rawan banjir<br>         🐟 Ikan: kepiting<br>         📊 Data: BMKG & BPS         </div>         </div>`)[0];
+                popup_a77f998413efea996cc26f4df4868552.setContent(html_39f859eb5b8e66eb447c7f06fb1c862f);
+            
+        
+
+        marker_4453ce48cd13e094cc228dc0245bf645.bindPopup(popup_a77f998413efea996cc26f4df4868552)
+        ;
+
+        
+    
+    
+            marker_4453ce48cd13e094cc228dc0245bf645.bindTooltip(
+                `<div>
+                     Sambas
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4453ce48cd13e094cc228dc0245bf645.setIcon(icon_f672d9f0fe8570bc21007f0c605f7a5c);
+            
+    
+            feature_group_f4edd261d8845912515fea2bf8271a3c.addTo(map_f615d911f34e80b64cc0ddd6608e0842);
+        
+    
+            var feature_group_3523dfd353b961c655fc6bd0ae71f3b2 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_f0c1480db424e2c80a8c1cf56a4f6d34 = L.marker(
+                [-0.02612510056551984, 109.34699526061569],
+                {
+}
+            ).addTo(feature_group_3523dfd353b961c655fc6bd0ae71f3b2);
+        
+    
+            var icon_8cd7bd9a47631dfee10b9600895acd4b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_46cf9f8a00d4944ff58c8e15fc45fc93 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var i_frame_923247944df755d6e6fb2ac992ab1fa9 = $(`<iframe src="data:text/html;charset=utf-8;base64,CiAgICAKICAgIDxodG1sPgogICAgPGhlYWQ+CiAgICA8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L25wbS9jaGFydC5qcyI+PC9zY3JpcHQ+CiAgICA8L2hlYWQ+CiAgICA8Ym9keT4KICAgIDxoND5Qb250aWFuYWs8L2g0PgogICAgPGNhbnZhcyBpZD0iY2hhcnQiIHdpZHRoPSIyNTAiIGhlaWdodD0iMTUwIj48L2NhbnZhcz4KICAgIDxzY3JpcHQ+CiAgICB2YXIgY3R4ID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2NoYXJ0JykuZ2V0Q29udGV4dCgnMmQnKTsKICAgIG5ldyBDaGFydChjdHgsIHsKICAgICAgICB0eXBlOiAnbGluZScsCiAgICAgICAgZGF0YTogewogICAgICAgICAgICBsYWJlbHM6IFsnSmFuJywnRmViJywnTWFyJywnQXByJywnTWVpJywnSnVuJywnSnVsJywnQWd1JywnU2VwJywnT2t0JywnTm92JywnRGVzJ10sCiAgICAgICAgICAgIGRhdGFzZXRzOiBbeyBkYXRhOiBbMzAwLCAyODAsIDMyMCwgMjkwLCAyNjAsIDIwMCwgMTgwLCAxOTAsIDIyMCwgMjcwLCAzMTAsIDMzMF0sIGJvcmRlcldpZHRoOiAyIH1dCiAgICAgICAgfSwKICAgICAgICBvcHRpb25zOiB7IHJlc3BvbnNpdmU6IGZhbHNlLCBwbHVnaW5zOiB7IGxlZ2VuZDogeyBkaXNwbGF5OiBmYWxzZSB9IH0gfQogICAgfSk7CiAgICA8L3NjcmlwdD4KICAgIDwvYm9keT4KICAgIDwvaHRtbD4KICAgIA==" width="300" style="border:none !important;" height="250"></iframe>`)[0];
+                popup_46cf9f8a00d4944ff58c8e15fc45fc93.setContent(i_frame_923247944df755d6e6fb2ac992ab1fa9);
+            
+        
+
+        marker_f0c1480db424e2c80a8c1cf56a4f6d34.bindPopup(popup_46cf9f8a00d4944ff58c8e15fc45fc93)
+        ;
+
+        
+    
+    
+            marker_f0c1480db424e2c80a8c1cf56a4f6d34.bindTooltip(
+                `<div>
+                     Pontianak
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f0c1480db424e2c80a8c1cf56a4f6d34.setIcon(icon_8cd7bd9a47631dfee10b9600895acd4b);
+            
+    
+            var marker_920aa996d3c6abd95d9faca8c5b2e6c1 = L.marker(
+                [0.06379206456542849, 111.48554055559367],
+                {
+}
+            ).addTo(feature_group_3523dfd353b961c655fc6bd0ae71f3b2);
+        
+    
+            var icon_caaad18316f02e89ec91d5940c38e813 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a38dd1a2870ce4191d6e021ad00e1e9f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var i_frame_4b963521f105011471c7be2154756d5d = $(`<iframe src="data:text/html;charset=utf-8;base64,CiAgICAKICAgIDxodG1sPgogICAgPGhlYWQ+CiAgICA8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L25wbS9jaGFydC5qcyI+PC9zY3JpcHQ+CiAgICA8L2hlYWQ+CiAgICA8Ym9keT4KICAgIDxoND5TaW50YW5nPC9oND4KICAgIDxjYW52YXMgaWQ9ImNoYXJ0IiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjE1MCI+PC9jYW52YXM+CiAgICA8c2NyaXB0PgogICAgdmFyIGN0eCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjaGFydCcpLmdldENvbnRleHQoJzJkJyk7CiAgICBuZXcgQ2hhcnQoY3R4LCB7CiAgICAgICAgdHlwZTogJ2xpbmUnLAogICAgICAgIGRhdGE6IHsKICAgICAgICAgICAgbGFiZWxzOiBbJ0phbicsJ0ZlYicsJ01hcicsJ0FwcicsJ01laScsJ0p1bicsJ0p1bCcsJ0FndScsJ1NlcCcsJ09rdCcsJ05vdicsJ0RlcyddLAogICAgICAgICAgICBkYXRhc2V0czogW3sgZGF0YTogWzI4MCwgMjYwLCAzMDAsIDI3MCwgMjUwLCAyMTAsIDE5MCwgMjAwLCAyMzAsIDI2MCwgMjkwLCAzMTBdLCBib3JkZXJXaWR0aDogMiB9XQogICAgICAgIH0sCiAgICAgICAgb3B0aW9uczogeyByZXNwb25zaXZlOiBmYWxzZSwgcGx1Z2luczogeyBsZWdlbmQ6IHsgZGlzcGxheTogZmFsc2UgfSB9IH0KICAgIH0pOwogICAgPC9zY3JpcHQ+CiAgICA8L2JvZHk+CiAgICA8L2h0bWw+CiAgICA=" width="300" style="border:none !important;" height="250"></iframe>`)[0];
+                popup_a38dd1a2870ce4191d6e021ad00e1e9f.setContent(i_frame_4b963521f105011471c7be2154756d5d);
+            
+        
+
+        marker_920aa996d3c6abd95d9faca8c5b2e6c1.bindPopup(popup_a38dd1a2870ce4191d6e021ad00e1e9f)
+        ;
+
+        
+    
+    
+            marker_920aa996d3c6abd95d9faca8c5b2e6c1.bindTooltip(
+                `<div>
+                     Sintang
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_920aa996d3c6abd95d9faca8c5b2e6c1.setIcon(icon_caaad18316f02e89ec91d5940c38e813);
+            
+    
+            var marker_b2816fb99b4d781162dd72106c5b30a8 = L.marker(
+                [0.12026204881459146, 110.597426671826],
+                {
+}
+            ).addTo(feature_group_3523dfd353b961c655fc6bd0ae71f3b2);
+        
+    
+            var icon_0b5d37f28406911c44868a162fc843c1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_47a814a7d6bc3d747552c321adafac65 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var i_frame_6a835b01b6f475c1a41a0b44937a1323 = $(`<iframe src="data:text/html;charset=utf-8;base64,CiAgICAKICAgIDxodG1sPgogICAgPGhlYWQ+CiAgICA8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L25wbS9jaGFydC5qcyI+PC9zY3JpcHQ+CiAgICA8L2hlYWQ+CiAgICA8Ym9keT4KICAgIDxoND5TYW5nZ2F1PC9oND4KICAgIDxjYW52YXMgaWQ9ImNoYXJ0IiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjE1MCI+PC9jYW52YXM+CiAgICA8c2NyaXB0PgogICAgdmFyIGN0eCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjaGFydCcpLmdldENvbnRleHQoJzJkJyk7CiAgICBuZXcgQ2hhcnQoY3R4LCB7CiAgICAgICAgdHlwZTogJ2xpbmUnLAogICAgICAgIGRhdGE6IHsKICAgICAgICAgICAgbGFiZWxzOiBbJ0phbicsJ0ZlYicsJ01hcicsJ0FwcicsJ01laScsJ0p1bicsJ0p1bCcsJ0FndScsJ1NlcCcsJ09rdCcsJ05vdicsJ0RlcyddLAogICAgICAgICAgICBkYXRhc2V0czogW3sgZGF0YTogWzI5MCwgMjcwLCAzMTAsIDI4MCwgMjYwLCAyMjAsIDIwMCwgMjEwLCAyNDAsIDI3MCwgMzAwLCAzMjBdLCBib3JkZXJXaWR0aDogMiB9XQogICAgICAgIH0sCiAgICAgICAgb3B0aW9uczogeyByZXNwb25zaXZlOiBmYWxzZSwgcGx1Z2luczogeyBsZWdlbmQ6IHsgZGlzcGxheTogZmFsc2UgfSB9IH0KICAgIH0pOwogICAgPC9zY3JpcHQ+CiAgICA8L2JvZHk+CiAgICA8L2h0bWw+CiAgICA=" width="300" style="border:none !important;" height="250"></iframe>`)[0];
+                popup_47a814a7d6bc3d747552c321adafac65.setContent(i_frame_6a835b01b6f475c1a41a0b44937a1323);
+            
+        
+
+        marker_b2816fb99b4d781162dd72106c5b30a8.bindPopup(popup_47a814a7d6bc3d747552c321adafac65)
+        ;
+
+        
+    
+    
+            marker_b2816fb99b4d781162dd72106c5b30a8.bindTooltip(
+                `<div>
+                     Sanggau
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b2816fb99b4d781162dd72106c5b30a8.setIcon(icon_0b5d37f28406911c44868a162fc843c1);
+            
+    
+            var marker_7d78281454e5b20cf4a48c92391879ad = L.marker(
+                [0.852309058851196, 112.92538755551811],
+                {
+}
+            ).addTo(feature_group_3523dfd353b961c655fc6bd0ae71f3b2);
+        
+    
+            var icon_c1720e9f63bacfe29fff0dfddab46874 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_30472d6d81ccf9bb7f4277b41bbf75a7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var i_frame_bf0d06c83e5d681de84893eb8ec07c9a = $(`<iframe src="data:text/html;charset=utf-8;base64,CiAgICAKICAgIDxodG1sPgogICAgPGhlYWQ+CiAgICA8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L25wbS9jaGFydC5qcyI+PC9zY3JpcHQ+CiAgICA8L2hlYWQ+CiAgICA8Ym9keT4KICAgIDxoND5QdXR1c3NpYmF1PC9oND4KICAgIDxjYW52YXMgaWQ9ImNoYXJ0IiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjE1MCI+PC9jYW52YXM+CiAgICA8c2NyaXB0PgogICAgdmFyIGN0eCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjaGFydCcpLmdldENvbnRleHQoJzJkJyk7CiAgICBuZXcgQ2hhcnQoY3R4LCB7CiAgICAgICAgdHlwZTogJ2xpbmUnLAogICAgICAgIGRhdGE6IHsKICAgICAgICAgICAgbGFiZWxzOiBbJ0phbicsJ0ZlYicsJ01hcicsJ0FwcicsJ01laScsJ0p1bicsJ0p1bCcsJ0FndScsJ1NlcCcsJ09rdCcsJ05vdicsJ0RlcyddLAogICAgICAgICAgICBkYXRhc2V0czogW3sgZGF0YTogWzMyMCwgMzAwLCAzNDAsIDMxMCwgMjkwLCAyNTAsIDIzMCwgMjQwLCAyNzAsIDMwMCwgMzMwLCAzNTBdLCBib3JkZXJXaWR0aDogMiB9XQogICAgICAgIH0sCiAgICAgICAgb3B0aW9uczogeyByZXNwb25zaXZlOiBmYWxzZSwgcGx1Z2luczogeyBsZWdlbmQ6IHsgZGlzcGxheTogZmFsc2UgfSB9IH0KICAgIH0pOwogICAgPC9zY3JpcHQ+CiAgICA8L2JvZHk+CiAgICA8L2h0bWw+CiAgICA=" width="300" style="border:none !important;" height="250"></iframe>`)[0];
+                popup_30472d6d81ccf9bb7f4277b41bbf75a7.setContent(i_frame_bf0d06c83e5d681de84893eb8ec07c9a);
+            
+        
+
+        marker_7d78281454e5b20cf4a48c92391879ad.bindPopup(popup_30472d6d81ccf9bb7f4277b41bbf75a7)
+        ;
+
+        
+    
+    
+            marker_7d78281454e5b20cf4a48c92391879ad.bindTooltip(
+                `<div>
+                     Putussibau
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7d78281454e5b20cf4a48c92391879ad.setIcon(icon_c1720e9f63bacfe29fff0dfddab46874);
+            
+    
+            var marker_7be3d93aea0dd7eb5cc7a5777da0aa86 = L.marker(
+                [0.3642598941145667, 108.95494584114053],
+                {
+}
+            ).addTo(feature_group_3523dfd353b961c655fc6bd0ae71f3b2);
+        
+    
+            var icon_870a05f362d70539bfc57c355ab0f10c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c33ac1962e5252996f41ecca28951dc7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var i_frame_b153171bc4f47b05493a60cc629f996b = $(`<iframe src="data:text/html;charset=utf-8;base64,CiAgICAKICAgIDxodG1sPgogICAgPGhlYWQ+CiAgICA8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L25wbS9jaGFydC5qcyI+PC9zY3JpcHQ+CiAgICA8L2hlYWQ+CiAgICA8Ym9keT4KICAgIDxoND5NZW1wYXdhaDwvaDQ+CiAgICA8Y2FudmFzIGlkPSJjaGFydCIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIxNTAiPjwvY2FudmFzPgogICAgPHNjcmlwdD4KICAgIHZhciBjdHggPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnY2hhcnQnKS5nZXRDb250ZXh0KCcyZCcpOwogICAgbmV3IENoYXJ0KGN0eCwgewogICAgICAgIHR5cGU6ICdsaW5lJywKICAgICAgICBkYXRhOiB7CiAgICAgICAgICAgIGxhYmVsczogWydKYW4nLCdGZWInLCdNYXInLCdBcHInLCdNZWknLCdKdW4nLCdKdWwnLCdBZ3UnLCdTZXAnLCdPa3QnLCdOb3YnLCdEZXMnXSwKICAgICAgICAgICAgZGF0YXNldHM6IFt7IGRhdGE6IFszMTAsIDI5MCwgMzMwLCAzMDAsIDI3MCwgMjMwLCAyMTAsIDIyMCwgMjUwLCAyODAsIDMxMCwgMzQwXSwgYm9yZGVyV2lkdGg6IDIgfV0KICAgICAgICB9LAogICAgICAgIG9wdGlvbnM6IHsgcmVzcG9uc2l2ZTogZmFsc2UsIHBsdWdpbnM6IHsgbGVnZW5kOiB7IGRpc3BsYXk6IGZhbHNlIH0gfSB9CiAgICB9KTsKICAgIDwvc2NyaXB0PgogICAgPC9ib2R5PgogICAgPC9odG1sPgogICAg" width="300" style="border:none !important;" height="250"></iframe>`)[0];
+                popup_c33ac1962e5252996f41ecca28951dc7.setContent(i_frame_b153171bc4f47b05493a60cc629f996b);
+            
+        
+
+        marker_7be3d93aea0dd7eb5cc7a5777da0aa86.bindPopup(popup_c33ac1962e5252996f41ecca28951dc7)
+        ;
+
+        
+    
+    
+            marker_7be3d93aea0dd7eb5cc7a5777da0aa86.bindTooltip(
+                `<div>
+                     Mempawah
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7be3d93aea0dd7eb5cc7a5777da0aa86.setIcon(icon_870a05f362d70539bfc57c355ab0f10c);
+            
+    
+            feature_group_3523dfd353b961c655fc6bd0ae71f3b2.addTo(map_f615d911f34e80b64cc0ddd6608e0842);
+        
+    
+            var layer_control_2b26604ffa1343665ae8aa3017b12cb9_layers = {
+                base_layers : {
+                    "OpenStreetMap (melihat detail nama jalan dan tempat)" : tile_layer_3ad2a8e2e0f57ebebf9ae4cdb99818a1,
+                    "Minimalis (melihat lebih jelas aliran sungai dan perbatasan)" : tile_layer_6daab6ffc84560f6725dd4426b01f3a8,
+                    "Satelit (melihat kondisi hutan dan sungai secara nyata)" : tile_layer_a6431e0ad0af79c72441e63151ec87fc,
+                },
+                overlays :  {
+                    "Hulu \u0026 Muara" : feature_group_d77e00988193fc8998073d17a0a79235,
+                    "Sungai Besar" : feature_group_57b4d58edb013efc2c0d5ec5a133cc6f,
+                    "Anak Sungai" : feature_group_f4edd261d8845912515fea2bf8271a3c,
+                    "Kota (Curah Hujan)" : feature_group_3523dfd353b961c655fc6bd0ae71f3b2,
+                },
+            };
+            let layer_control_2b26604ffa1343665ae8aa3017b12cb9 = L.control.layers(
+                layer_control_2b26604ffa1343665ae8aa3017b12cb9_layers.base_layers,
+                layer_control_2b26604ffa1343665ae8aa3017b12cb9_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_f615d911f34e80b64cc0ddd6608e0842);
+
+        
+</script>
+</html>
