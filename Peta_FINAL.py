@@ -1,5 +1,5 @@
 import folium
-from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
+from folium.plugins import AntPath, Fullscreen, MiniMap, MeasureControl, MousePosition
 from folium import IFrame
 
 # =========================
@@ -55,7 +55,7 @@ for nama, lat, lon, info in data_hulu:
         icon=folium.Icon(color="blue")
     ).add_to(layer_hulu)
 
-# 🔵 ALIRAN SUNGAI (SEKARANG MASUK LAYER)
+# 🔵 ALIRAN SUNGAI 
 flow = [
     [0.616424, 113.792087],
     [0.3, 112.5],
@@ -63,12 +63,8 @@ flow = [
     [0.055618, 109.191055]
 ]
 
-folium.PolyLine(
-    flow,
-    color="yellow",
-    weight=5,
-    dash_array="10,10"
-).add_to(layer_hulu)
+# ANIMASI ALIRAN
+AntPath(flow, color="yellow", weight=5, delay=800).add_to(layer_hulu)
 
 # 🔵 TAMBAHKAN KE MAP
 layer_hulu.add_to(m)
@@ -130,6 +126,20 @@ for nama, lat, lon, panjang, Ikan in anak:
         icon=folium.Icon(color="orange")
     ).add_to(layer_anak)
 
+ # GARIS ANAK SUNGAI
+garis_anak = [
+    [[-0.32890663075528137, 111.73693709543416], [0.07666744039967341, 111.48810358819729]],
+    [[0.126, 110.610], [0.13173754227778225, 110.62286378670876]],
+    [[-0.021, 109.350], [-0.024065608635476573, 109.50317363036882]],
+    [[-0.488, 109.376], [-0.45261559530764517, 109.37183132325187]],
+    [[-1.326, 110.466], [-1.4473571136583872, 110.42386068647635]],
+    [[1.364, 109.309], [1.2905369966070426, 109.17160403714739]]
+]
+
+for garis in garis_anak:
+    folium.PolyLine(garis, color="orange", weight=3, opacity=0.7).add_to(layer_anak)
+
+
 layer_anak.add_to(m)
 
 # =========================
@@ -167,7 +177,6 @@ layer_kota = folium.FeatureGroup(name="Kota (Curah Hujan)")
 
 kota = [
     ("Pontianak", -0.02612510056551984, 109.34699526061569, [300,280,320,290,260,200,180,190,220,270,310,330]),
-    ("Sintang", 0.06379206456542849, 111.48554055559367, [280,260,300,270,250,210,190,200,230,260,290,310]),
     ("Sanggau", 0.12026204881459146, 110.597426671826 , [290,270,310,280,260,220,200,210,240,270,300,320]),
     ("Putussibau", 0.852309058851196, 112.92538755551811, [320,300,340,310,290,250,230,240,270,300,330,350]),
     ("Mempawah", 0.3642598941145667, 108.95494584114053, [310,290,330,300,270,230,210,220,250,280,310,340])
@@ -187,24 +196,15 @@ layer_kota.add_to(m)
 # LEGENDA
 # =========================
 legend = """
-<div style="
-position: fixed;
-bottom: 50px;
-left: 10px;
-z-index:9999;
-background: white;
-padding: 12px;
-border-radius: 10px;
-box-shadow: 0 0 10px rgba(0,0,0,0.3);
-font-size:14px;
-">
+<div style="position: fixed;bottom: 50px;left: 10px;z-index:9999;
+background: white;padding: 12px;border-radius: 10px;">
 
 <b>Legenda</b><br> 
 🔵 Hulu/Muara<br> 
 🟢 Sungai Besar<br> 
 🟠 Anak Sungai<br> 
-🔴 Kota (Grafik Hujan)<br> 
-🟡 Garis kuning: Aliran Air
+🔴 Kota<br> 
+🟡 Aliran Air
 </div>
 """
 m.get_root().html.add_child(folium.Element(legend))
@@ -216,6 +216,6 @@ folium.LayerControl(collapsed=False).add_to(m)
 # =========================
 # SIMPAN
 # =========================
-m.save("peta_KTI_fix.html")
+m.save("index.html")
 
 print("Peta final siap 🚀")
